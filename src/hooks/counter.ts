@@ -4,6 +4,7 @@ type Counter = {
   state: Ref<number>,
   increment: () => void,
   decrement: () => void,
+  reset: () => void,
 }
 
 export default function useCounter(): Counter {
@@ -11,10 +12,12 @@ export default function useCounter(): Counter {
 
   const increment = () => state.value++
   const decrement = () => state.value--
+  const reset = () => state.value = 0
 
   return {
     state,
     increment,
     decrement,
+    reset,
   }
 }

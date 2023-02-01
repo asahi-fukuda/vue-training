@@ -1,7 +1,7 @@
 <template lang="pug">
 .counter-page
   .counter
-    Count.cnt(:count="count")
+    Count.cnt(:count="count" @reset="reset")
   .buttons
     .box
       button.btn.dec(@click="decrement") -
@@ -16,12 +16,13 @@ import useCounter from "@/hooks/counter";
 
 export default defineComponent({
   setup() {
-    const { state: count, increment, decrement } = useCounter();
+    const { state: count, increment, decrement, reset } = useCounter();
 
     return {
       count,
       increment,
       decrement,
+      reset,
     };
   },
 

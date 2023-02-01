@@ -1,5 +1,6 @@
 <template lang="pug">
-.count {{ count }}
+.count
+  .count(@click="$emit('reset')") {{ count }}
 </template>
 
 <script lang="ts">
