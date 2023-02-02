@@ -23,23 +23,21 @@ export default defineComponent({
 .list {
   width: 50%;
   margin: auto;
-}
-
-ul {
-  padding: 0;
-  position: relative;
-  text-align: left;
-}
-
-li {
-  color: black;
-  border-bottom: solid 2px whitesmoke;
-  margin-bottom: 5px;
-  line-height: 1.5;
-  padding: 10px;
-  list-style-type: none;
-  &:first-child {
-    border-top: solid 2px whitesmoke;
+  ul {
+    padding: 0;
+    position: relative;
+    text-align: left;
+    li {
+      color: black;
+      border-bottom: solid 2px whitesmoke;
+      margin-bottom: 5px;
+      line-height: 1.5;
+      padding: 10px;
+      list-style-type: none;
+      &:first-child {
+        border-top: solid 2px whitesmoke;
+      }
+    }
   }
 }
 </style>
