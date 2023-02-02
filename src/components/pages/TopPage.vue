@@ -8,30 +8,29 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue"
+import { defineComponent } from 'vue'
 
-import SimpleButton from "@/components/buttons/SimpleButton.vue"
-import Spinner from "@/components/indicators/Spinner.vue"
-import List from "@/components/lists/List.vue"
+import SimpleButton from '@/components/buttons/SimpleButton.vue'
+import Spinner from '@/components/indicators/Spinner.vue'
+import List from '@/components/lists/List.vue'
 
 export default defineComponent({
   components: {
     SimpleButton,
     Spinner,
-    List
+    List,
   },
 
   setup() {
-  const click = () => {
-    window.alert('click!')
-  }
+    const click = () => {
+      window.alert('click!')
+    }
 
-  return {
-    click
-  }
-}
+    return {
+      click,
+    }
+  },
 })
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

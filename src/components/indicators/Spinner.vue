@@ -17,24 +17,23 @@ import { defineComponent, PropType } from 'vue'
 
 export default defineComponent({
   props: {
-    SpinnerWidth :{
+    SpinnerWidth: {
       type: Number as PropType<number>,
       required: true,
-      default: 35
+      default: 35,
     },
-    SpinnerHeight:{
+    SpinnerHeight: {
       type: Number as PropType<number>,
       required: true,
-      default: 35
+      default: 35,
     },
-    SpinnerSpeed:{
+    SpinnerSpeed: {
       type: Number as PropType<number>,
       required: true,
-      default: 1.0
+      default: 1.0,
     },
-  }
+  },
 })
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

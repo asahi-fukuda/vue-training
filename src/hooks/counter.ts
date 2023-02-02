@@ -1,10 +1,10 @@
-import { Ref, ref } from "vue";
+import { Ref, ref } from 'vue'
 
 type Counter = {
-  state: Ref<number>,
-  increment: () => void,
-  decrement: () => void,
-  reset: () => void,
+  state: Ref<number>
+  increment: () => void
+  decrement: () => void
+  reset: () => void
 }
 
 export default function useCounter(): Counter {
@@ -12,7 +12,7 @@ export default function useCounter(): Counter {
 
   const increment = () => state.value++
   const decrement = () => state.value--
-  const reset = () => state.value = 0
+  const reset = () => (state.value = 0)
 
   return {
     state,

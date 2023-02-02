@@ -9,27 +9,27 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue'
 
-import Count from "./Count.vue";
-import useCounter from "@/hooks/counter";
+import Count from './Count.vue'
+import useCounter from '@/hooks/counter'
 
 export default defineComponent({
   setup() {
-    const { state: count, increment, decrement, reset } = useCounter();
+    const { state: count, increment, decrement, reset } = useCounter()
 
     return {
       count,
       increment,
       decrement,
       reset,
-    };
+    }
   },
 
   components: {
     Count,
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>

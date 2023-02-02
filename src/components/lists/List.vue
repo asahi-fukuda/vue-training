@@ -5,17 +5,17 @@
 </template>
 
 <script>
-import { defineComponent } from "vue"
+import { defineComponent } from 'vue'
 import { ref } from 'vue'
 
 export default defineComponent({
   setup() {
-    const items = ref(["Item1", "Item2", "Item3", "Item4"])
-  
+    const items = ref(['Item1', 'Item2', 'Item3', 'Item4'])
+
     return {
-      items
+      items,
     }
-  }
+  },
 })
 </script>
 
