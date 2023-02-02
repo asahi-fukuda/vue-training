@@ -4,7 +4,7 @@
     li(v-for="list in items") {{ list }}
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from 'vue'
 import { ref } from 'vue'
 
