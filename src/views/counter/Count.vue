@@ -4,7 +4,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType } from 'vue'
 
 export default defineComponent({
   props: {
@@ -13,7 +13,7 @@ export default defineComponent({
       required: true,
     },
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>
