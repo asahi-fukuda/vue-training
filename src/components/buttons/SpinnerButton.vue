@@ -50,6 +50,9 @@ export default defineComponent({
   &:active {
     opacity: 0.8;
   }
+  svg {
+    fill: #ffffff;
+  }
   .text {
     line-height: 20px;
     margin-left: 5px;
