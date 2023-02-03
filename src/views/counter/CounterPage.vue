@@ -1,7 +1,7 @@
 <template lang="pug">
 .counter-page
   .counter
-    Count.cnt(:count="count" @reset="reset")
+    Count.cnt(@reset="reset")
   .buttons
     .box
       button.btn.dec(@click="decrement") -
@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, provide } from 'vue'
 
 import Count from './Count.vue'
 import useCounter from '@/hooks/counter'
@@ -17,6 +17,8 @@ import useCounter from '@/hooks/counter'
 export default defineComponent({
   setup() {
     const { state: count, increment, decrement, reset } = useCounter()
+
+    provide('count', count)
 
     return {
       count,
