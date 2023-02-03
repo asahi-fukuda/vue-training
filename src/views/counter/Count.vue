@@ -4,14 +4,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, inject } from 'vue'
 
 export default defineComponent({
-  props: {
-    count: {
-      type: Number as PropType<number>,
-      required: true,
-    },
+  setup() {
+    const count = inject<number>('count')
+
+    return {
+      count,
+    }
   },
 })
 </script>
