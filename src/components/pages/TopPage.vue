@@ -1,44 +1,62 @@
 <template lang="pug">
-.button
-  SimpleButton(text="BUTTON" @click="click")
-.list
-  List
-.button
-  SpinnerButton(text="BUTTON" @click="progress" :isProgress="isProgress" :isComplete="isComplete")
-</template>
+.container
+  .row
+    SpinnerButton(text="BUTTON" @click="click1" :isProgress="isProgress" :isComplete="isComplete")
+  .row
+    table.entries
+      tbody
+        tr.entries(v-for="ent in pageableEntries.entries")
+          td {{ent.id}}
+          td {{ent.title}}
+          td {{ent.userName}}
+          td {{ent.createdAt}}
+  </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { ref } from 'vue'
-
-import SimpleButton from '@/components/buttons/SimpleButton.vue'
-import Spinner from '@/components/indicators/Spinner.vue'
-import List from '@/components/lists/List.vue'
+import { defineComponent, inject, ref } from 'vue'
 import SpinnerButton from '@/components/buttons/SpinnerButton.vue'
+import { qiitaEntryRepositoryKey } from '@/symbols/qiitaRepositoryKeys'
+import QiitaEntryRepository from '@/domain/repositories/qiitaEntryRepository'
+import usePagableEntriesState from '@/hooks/pagableEntries'
 
 export default defineComponent({
+  name: 'HelloWorld',
+
   components: {
-    SimpleButton,
-    Spinner,
-    List,
     SpinnerButton,
   },
 
   setup() {
-    const click = () => {
-      window.alert('click!')
+    const qiitaEntryRepository = inject<QiitaEntryRepository>(
+      qiitaEntryRepositoryKey
+    )
+    if (qiitaEntryRepository === undefined) {
+      throw `${qiitaEntryRepositoryKey.toString()} is not provided`
+    }
+
+    const { state: pageableEntries, load: loadEntries } =
+      usePagableEntriesState(qiitaEntryRepository)
+
+    const loadPage = async (page: number) => {
+      progress()
+      loadEntries(1).then(() => {
+        complete()
+      })
+    }
+
+    const click1 = () => {
+      loadPage(1)
     }
 
     const isProgress = ref(false)
     const isComplete = ref(false)
 
-    // 処理中の挙動
     const progress = () => {
       isProgress.value = true
     }
 
-    // 完了時の挙動
     const complete = () => {
+      isProgress.value = false
       isComplete.value = true
       setTimeout(() => {
         isComplete.value = false
@@ -46,7 +64,8 @@ export default defineComponent({
     }
 
     return {
-      click,
+      pageableEntries,
+      click1,
       progress,
       complete,
       isProgress,
@@ -56,4 +75,15 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped lang="scss">
+.container {
+  margin: auto auto;
+  width: 900px;
+  .entries {
+    margin-top: 10px;
+    td {
+      background-color: #eec;
+    }
+  }
+}
+</style>

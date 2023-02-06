@@ -1,12 +1,18 @@
 import CounterPage from '@/views/counter/CounterPage.vue'
+import Component from '@/components/pages/Component.vue'
 import TopPage from '@/components/pages/TopPage.vue'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'top',
+    name: 'qiita',
     component: TopPage,
+  },
+  {
+    path: '/component',
+    name: 'component',
+    component: Component,
   },
   {
     path: '/counter',
