@@ -43,6 +43,7 @@ export default function usePagableEntriesState(
         page,
         entries,
       }
+      console.log(state.value.page)
     })
   }
 

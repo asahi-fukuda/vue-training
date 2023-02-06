@@ -1,6 +1,5 @@
 <template lang="pug">
-.button
-  button.btn(@click="$emit('click')") {{ text }}
+button.btn(@click="$emit('click')") {{ text }}
 </template>
 
 <script lang="ts">
@@ -22,9 +21,9 @@ export default defineComponent({
   background-color: #8a2be2;
   color: white;
   border: none;
-  margin: 10px 20px;
   padding: 12px 18px;
   border-radius: 8px;
+  line-height: 20px;
   cursor: pointer;
   &:hover {
     background-color: #9932cc;

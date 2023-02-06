@@ -1,7 +1,10 @@
 <template lang="pug">
 .container
   .row
-    SpinnerButton(text="BUTTON" @click="click1" :isProgress="isProgress" :isComplete="isComplete")
+    .buttons
+      SimpleButton.before(text="Before" @click="beforePage")
+      SpinnerButton(text="BUTTON" @click="loadPage" :isProgress="isProgress" :isComplete="isComplete")
+      SimpleButton.next(text="Next" @click="nextPage")
   .row
     table.entries
       tbody
@@ -15,6 +18,7 @@
 <script lang="ts">
 import { defineComponent, inject, ref } from 'vue'
 import SpinnerButton from '@/components/buttons/SpinnerButton.vue'
+import SimpleButton from '../buttons/SimpleButton.vue'
 import { qiitaEntryRepositoryKey } from '@/symbols/qiitaRepositoryKeys'
 import QiitaEntryRepository from '@/domain/repositories/qiitaEntryRepository'
 import usePagableEntriesState from '@/hooks/pagableEntries'
@@ -24,6 +28,7 @@ export default defineComponent({
 
   components: {
     SpinnerButton,
+    SimpleButton,
   },
 
   setup() {
@@ -37,15 +42,21 @@ export default defineComponent({
     const { state: pageableEntries, load: loadEntries } =
       usePagableEntriesState(qiitaEntryRepository)
 
+    const pages = ref(1)
+
     const loadPage = async (page: number) => {
       progress()
-      loadEntries(1).then(() => {
+      loadEntries(pages.value).then(() => {
         complete()
       })
     }
 
-    const click1 = () => {
-      loadPage(1)
+    const nextPage = async (page: number) => {
+      loadEntries(pages.value++)
+    }
+
+    const beforePage = async (page: number) => {
+      loadEntries(pages.value--)
     }
 
     const isProgress = ref(false)
@@ -65,11 +76,14 @@ export default defineComponent({
 
     return {
       pageableEntries,
-      click1,
+      loadPage,
       progress,
       complete,
       isProgress,
       isComplete,
+      nextPage,
+      beforePage,
+      pages,
     }
   },
 })
@@ -79,6 +93,17 @@ export default defineComponent({
 .container {
   margin: auto auto;
   width: 900px;
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .before {
+    margin-right: 20px;
+  }
+  .next {
+    margin-left: 20px;
+  }
   .entries {
     margin-top: 10px;
     td {
