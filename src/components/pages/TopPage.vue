@@ -2,9 +2,9 @@
 .container
   .row
     .buttons
-      SimpleButton.before(text="Before" @click="beforePage")
-      SpinnerButton(text="BUTTON" @click="loadPage" :isProgress="isProgress" :isComplete="isComplete")
-      SimpleButton.next(text="Next" @click="nextPage")
+      SimpleButton.before(text="Before" @click="beforePage(page)")
+      SpinnerButton(text="BUTTON" @click="loadPage(page)" :isProgress="isProgress" :isComplete="isComplete")
+      SimpleButton.next(text="Next" @click="nextPage(page)")
   .row
     table.entries
       tbody
@@ -31,6 +31,32 @@ export default defineComponent({
     SimpleButton,
   },
 
+  data() {
+    return {
+      page: 1,
+      isLoading: false,
+      isCompleted: false,
+    }
+  },
+  methods: {
+    async loadPage(p: number) {
+      this.onStartLoadPage()
+      loadEntries(p).then(() => {
+        this.onCompleted()
+        this.page = p
+      })
+    },
+    onStartLoadPage() {
+      this.isLoading = true
+    },
+    onCompleted() {
+      this.isLoading = false
+      this.isCompleted = true
+      setTimeout(() => {
+        this.isCompleted = false
+      }, 2000)
+    },
+  },
   setup() {
     const qiitaEntryRepository = inject<QiitaEntryRepository>(
       qiitaEntryRepositoryKey
@@ -42,48 +68,49 @@ export default defineComponent({
     const { state: pageableEntries, load: loadEntries } =
       usePagableEntriesState(qiitaEntryRepository)
 
-    const pages = ref(1)
+    // const page = ref(1)
 
-    const loadPage = async (page: number) => {
-      progress()
-      loadEntries(pages.value).then(() => {
-        complete()
-      })
-    }
+    // const loadPage = async (p: number) => {
+    //   progress()
+    //   loadEntries(p).then(() => {
+    //     complete()
+    //     page.value = p
+    //   })
+    // }
 
-    const nextPage = async (page: number) => {
-      loadEntries(pages.value++)
-    }
+    // const nextPage = async (p: number) => {
+    //   loadEntries(p)
+    // }
 
-    const beforePage = async (page: number) => {
-      loadEntries(pages.value--)
-    }
+    // const beforePage = async (p: number) => {
+    //   loadEntries(p)
+    // }
 
-    const isProgress = ref(false)
-    const isComplete = ref(false)
+    // const isProgress = ref(false)
+    // const isComplete = ref(false)
 
-    const progress = () => {
-      isProgress.value = true
-    }
+    // const progress = () => {
+    //   isProgress.value = true
+    // }
 
-    const complete = () => {
-      isProgress.value = false
-      isComplete.value = true
-      setTimeout(() => {
-        isComplete.value = false
-      }, 2000)
-    }
+    // const complete = () => {
+    //   isProgress.value = false
+    //   isComplete.value = true
+    //   setTimeout(() => {
+    //     isComplete.value = false
+    //   }, 2000)
+    // }
 
     return {
       pageableEntries,
-      loadPage,
-      progress,
-      complete,
-      isProgress,
-      isComplete,
-      nextPage,
-      beforePage,
-      pages,
+      // loadPage,
+      // progress,
+      // complete,
+      // isProgress,
+      // isComplete,
+      // nextPage,
+      // beforePage,
+      // page,
     }
   },
 })
