@@ -4,7 +4,7 @@
 .list
   List
 .button
-  SpinnerButton(text="BUTTON" @click="progress" :isLoading="isLoading" :isComplete="isComplete")
+  SpinnerButton(text="BUTTON" @click="progress" :isLoading="isLoading" :isCompleted="isCompleted")
 </template>
 
 <script lang="ts">

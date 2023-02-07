@@ -3,7 +3,7 @@
   .row
     .buttons
       SimpleButton.before(text="Before" @click="loadPage(this.page - 1)")
-      SpinnerButton(text="BUTTON" @click="loadPage(this.page)" :isLoading="isLoading" :isComplete="isCompleted")
+      SpinnerButton(text="BUTTON" @click="loadPage(this.page)" :isLoading="isLoading" :isCompleted="isCompleted")
       SimpleButton.next(text="Next" @click="loadPage(this.page + 1)")
   .row
     table.entries
