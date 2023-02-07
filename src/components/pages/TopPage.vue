@@ -2,9 +2,9 @@
 .container
   .row
     .buttons
-      SimpleButton.before(text="Before" @click="beforePage(page)")
-      SpinnerButton(text="BUTTON" @click="loadPage(page)" :isProgress="isProgress" :isComplete="isComplete")
-      SimpleButton.next(text="Next" @click="nextPage(page)")
+      SimpleButton.before(text="Before" @click="loadPage(this.page - 1)")
+      SpinnerButton(text="BUTTON" @click="loadPage(this.page)" :isLoading="isLoading" :isComplete="isCompleted")
+      SimpleButton.next(text="Next" @click="loadPage(this.page + 1)")
   .row
     table.entries
       tbody
@@ -16,7 +16,7 @@
   </template>
 
 <script lang="ts">
-import { defineComponent, inject, ref } from 'vue'
+import { defineComponent, inject } from 'vue'
 import SpinnerButton from '@/components/buttons/SpinnerButton.vue'
 import SimpleButton from '../buttons/SimpleButton.vue'
 import { qiitaEntryRepositoryKey } from '@/symbols/qiitaRepositoryKeys'
@@ -41,7 +41,7 @@ export default defineComponent({
   methods: {
     async loadPage(p: number) {
       this.onStartLoadPage()
-      loadEntries(p).then(() => {
+      this.loadEntries(p).then(() => {
         this.onCompleted()
         this.page = p
       })
@@ -68,49 +68,9 @@ export default defineComponent({
     const { state: pageableEntries, load: loadEntries } =
       usePagableEntriesState(qiitaEntryRepository)
 
-    // const page = ref(1)
-
-    // const loadPage = async (p: number) => {
-    //   progress()
-    //   loadEntries(p).then(() => {
-    //     complete()
-    //     page.value = p
-    //   })
-    // }
-
-    // const nextPage = async (p: number) => {
-    //   loadEntries(p)
-    // }
-
-    // const beforePage = async (p: number) => {
-    //   loadEntries(p)
-    // }
-
-    // const isProgress = ref(false)
-    // const isComplete = ref(false)
-
-    // const progress = () => {
-    //   isProgress.value = true
-    // }
-
-    // const complete = () => {
-    //   isProgress.value = false
-    //   isComplete.value = true
-    //   setTimeout(() => {
-    //     isComplete.value = false
-    //   }, 2000)
-    // }
-
     return {
       pageableEntries,
-      // loadPage,
-      // progress,
-      // complete,
-      // isProgress,
-      // isComplete,
-      // nextPage,
-      // beforePage,
-      // page,
+      loadEntries,
     }
   },
 })

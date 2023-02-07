@@ -4,7 +4,7 @@
 .list
   List
 .button
-  SpinnerButton(text="BUTTON" @click="progress" :isProgress="isProgress" :isComplete="isComplete")
+  SpinnerButton(text="BUTTON" @click="progress" :isLoading="isLoading" :isComplete="isComplete")
 </template>
 
 <script lang="ts">
@@ -29,19 +29,19 @@ export default defineComponent({
       window.alert('click!')
     }
 
-    const isProgress = ref(false)
-    const isComplete = ref(false)
+    const isLoading = ref(false)
+    const isCompleted = ref(false)
 
     // 処理中の挙動
     const progress = () => {
-      isProgress.value = true
+      isLoading.value = true
     }
 
     // 完了時の挙動
     const complete = () => {
-      isComplete.value = true
+      isCompleted.value = true
       setTimeout(() => {
-        isComplete.value = false
+        isCompleted.value = false
       }, 2000)
     }
 
@@ -49,8 +49,8 @@ export default defineComponent({
       click,
       progress,
       complete,
-      isProgress,
-      isComplete,
+      isLoading,
+      isCompleted,
     }
   },
 })

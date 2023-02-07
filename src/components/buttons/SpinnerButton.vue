@@ -1,9 +1,9 @@
 <template lang="pug">
-button(:disabled="isProgress")
+button(:disabled="isLoading")
   .btn
     .svg
-      Spinner(:SpinnerWidth="20" :SpinnerHeight="20" :SpinnerSpeed="1.0" v-show="isProgress")
-      svg(xmlns="http://www.w3.org/2000/svg", width="20", height="20", viewBox="0 0 200 200" v-show="isComplete")
+      Spinner(:SpinnerWidth="20" :SpinnerHeight="20" :SpinnerSpeed="1.0" v-show="isLoading")
+      svg(xmlns="http://www.w3.org/2000/svg", width="20", height="20", viewBox="0 0 200 200" v-show="isCompleted")
         path(d="M4890.068,1665.319a100,100,0,1,0,100,100A100,100,0,0,0,4890.068,1665.319Zm43.73,51.422,21.414,19.687-74.752,81.3-60.022-61.5,20.819-20.32,38.575,39.52Z", transform="translate(-4790.067 -1665.319)")
     .text {{ text }}
 </template>
@@ -23,11 +23,11 @@ export default defineComponent({
       type: String as PropType<string>,
       required: true,
     },
-    isProgress: {
+    isLoading: {
       type: Boolean as PropType<boolean>,
       required: true,
     },
-    isComplete: {
+    isCompleted: {
       type: Boolean as PropType<boolean>,
       required: true,
     },
