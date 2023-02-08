@@ -1,15 +1,14 @@
 <template lang="pug">
 .button
-  SimpleButton(text="BUTTON" @click="click")
+  SimpleButton(text="BUTTON" @click="click1")
 .list
   List
 .button
-  SpinnerButton(text="BUTTON" @click="progress" :isLoading="isLoading" :isCompleted="isCompleted")
+  SpinnerButton(text="BUTTON" @click="click2" ref="spinnerButton")
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { ref } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 import SimpleButton from '@/components/buttons/SimpleButton.vue'
 import Spinner from '@/components/indicators/Spinner.vue'
@@ -25,32 +24,21 @@ export default defineComponent({
   },
 
   setup() {
-    const click = () => {
+    const spinnerButton = ref<InstanceType<typeof SpinnerButton>>()
+
+    const click1 = () => {
       window.alert('click!')
     }
 
-    const isLoading = ref(false)
-    const isCompleted = ref(false)
-
-    // 処理中の挙動
-    const progress = () => {
-      isLoading.value = true
-    }
-
-    // 完了時の挙動
-    const complete = () => {
-      isCompleted.value = true
-      setTimeout(() => {
-        isCompleted.value = false
-      }, 2000)
+    const click2 = () => {
+      spinnerButton.value?.progress()
+      // spinnerButton.value?.onCompleted()
     }
 
     return {
-      click,
-      progress,
-      complete,
-      isLoading,
-      isCompleted,
+      click1,
+      click2,
+      spinnerButton,
     }
   },
 })
