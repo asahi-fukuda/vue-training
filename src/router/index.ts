@@ -1,6 +1,7 @@
 import CounterPage from '@/views/counter/CounterPage.vue'
 import Component from '@/components/pages/Component.vue'
 import TopPage from '@/components/pages/TopPage.vue'
+import DetailPage from '@/components/pages/DetailPage.vue'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 const routes: Array<RouteRecordRaw> = [
@@ -8,6 +9,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/',
     name: 'qiita',
     component: TopPage,
+  },
+  {
+    path: '/detail',
+    name: 'detail',
+    component: DetailPage,
   },
   {
     path: '/component',

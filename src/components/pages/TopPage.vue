@@ -10,11 +10,11 @@
       tbody
         tr.entries(v-for="ent in pageableEntries.entries")
           td {{ent.id}}
-          td {{ent.title}}
+          td 
+            router-link(:to="{name: 'detail', query: { title: ent.title, content: ent.renderedBody } }") {{ent.title}}
           td {{ent.userName}}
           td {{ent.createdAt}}
   </template>
-
 <script lang="ts">
 import { defineComponent, inject, ref } from 'vue'
 import SpinnerButton from '@/components/buttons/SpinnerButton.vue'
