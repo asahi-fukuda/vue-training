@@ -2,9 +2,9 @@
 .container
   .row
     .buttons
-      SimpleButton.before(text="Before" @click="loadPage(this.page - 1)")
-      SpinnerButton(text="BUTTON" @click="loadPage(this.page)" :isLoading="isLoading" :isCompleted="isCompleted")
-      SimpleButton.next(text="Next" @click="loadPage(this.page + 1)")
+      SimpleButton.before(text="Before" @click="beforeLoadPage")
+      SpinnerButton(text="BUTTON" @click="loadPage" ref="spinnerButton")
+      SimpleButton.next(text="Next" @click="nextLoadPage")
   .row
     table.entries
       tbody
@@ -16,7 +16,7 @@
   </template>
 
 <script lang="ts">
-import { defineComponent, inject } from 'vue'
+import { defineComponent, inject, ref } from 'vue'
 import SpinnerButton from '@/components/buttons/SpinnerButton.vue'
 import SimpleButton from '../buttons/SimpleButton.vue'
 import { qiitaEntryRepositoryKey } from '@/symbols/qiitaRepositoryKeys'
@@ -30,33 +30,6 @@ export default defineComponent({
     SpinnerButton,
     SimpleButton,
   },
-
-  data() {
-    return {
-      page: 1,
-      isLoading: false,
-      isCompleted: false,
-    }
-  },
-  methods: {
-    async loadPage(p: number) {
-      this.onStartLoadPage()
-      this.loadEntries(p).then(() => {
-        this.onCompleted()
-        this.page = p
-      })
-    },
-    onStartLoadPage() {
-      this.isLoading = true
-    },
-    onCompleted() {
-      this.isLoading = false
-      this.isCompleted = true
-      setTimeout(() => {
-        this.isCompleted = false
-      }, 2000)
-    },
-  },
   setup() {
     const qiitaEntryRepository = inject<QiitaEntryRepository>(
       qiitaEntryRepositoryKey
@@ -65,11 +38,42 @@ export default defineComponent({
       throw `${qiitaEntryRepositoryKey.toString()} is not provided`
     }
 
-    const { state: pageableEntries, load: loadEntries } =
-      usePagableEntriesState(qiitaEntryRepository)
+    const spinnerButton = ref<InstanceType<typeof SpinnerButton>>()
+
+    const {
+      pageAndEntries: pageableEntries,
+      load: loadEntries,
+      next: loadNextEntries,
+      before: loadBeforeEntries,
+    } = usePagableEntriesState(qiitaEntryRepository)
+
+    const loadPage = async () => {
+      spinnerButton.value?.progress()
+      loadEntries().then(() => {
+        spinnerButton.value?.onCompleted()
+      })
+    }
+
+    const nextLoadPage = async () => {
+      spinnerButton.value?.progress()
+      loadNextEntries().then(() => {
+        spinnerButton.value?.onCompleted()
+      })
+    }
+
+    const beforeLoadPage = async () => {
+      spinnerButton.value?.progress()
+      loadBeforeEntries().then(() => {
+        spinnerButton.value?.onCompleted()
+      })
+    }
 
     return {
       pageableEntries,
+      loadPage,
+      nextLoadPage,
+      beforeLoadPage,
+      spinnerButton,
       loadEntries,
     }
   },

@@ -9,7 +9,7 @@ button(:disabled="isLoading")
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, ref } from 'vue'
 
 import Spinner from '@/components/indicators/Spinner.vue'
 
@@ -23,14 +23,29 @@ export default defineComponent({
       type: String as PropType<string>,
       required: true,
     },
-    isLoading: {
-      type: Boolean as PropType<boolean>,
-      required: true,
-    },
-    isCompleted: {
-      type: Boolean as PropType<boolean>,
-      required: true,
-    },
+  },
+  setup() {
+    const isLoading = ref(false)
+    const isCompleted = ref(false)
+
+    const progress = () => {
+      isLoading.value = true
+    }
+
+    const onCompleted = () => {
+      isLoading.value = false
+      isCompleted.value = true
+      setTimeout(() => {
+        isCompleted.value = false
+      }, 2000)
+    }
+
+    return {
+      isLoading,
+      isCompleted,
+      progress,
+      onCompleted,
+    }
   },
 })
 </script>

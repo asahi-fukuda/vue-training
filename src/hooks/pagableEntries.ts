@@ -15,19 +15,22 @@ export type PageableEntries = {
 }
 
 export type State = {
-  state: Ref<PageableEntries>
-  load(page: number): Promise<void>
+  pageAndEntries: Ref<PageableEntries>
+  load: () => Promise<void>
+  next: () => Promise<void>
+  before: () => Promise<void>
 }
 
 export default function usePagableEntriesState(
   repository: QiitaEntryRepository
 ): State {
-  const state = ref<PageableEntries>({
-    page: 0,
+  const pageAndEntries = ref<PageableEntries>({
+    page: 1,
     entries: [],
   })
 
-  const load = async (page: number): Promise<void> => {
+  const load = async (): Promise<void> => {
+    const page = pageAndEntries.value.page
     return repository.items(page).then((ents) => {
       const entries = ents.map((ent) => {
         return {
@@ -39,16 +42,57 @@ export default function usePagableEntriesState(
         }
       })
 
-      state.value = {
+      pageAndEntries.value = {
         page,
         entries,
       }
-      console.log(state.value.page)
+    })
+  }
+
+  const next = async (): Promise<void> => {
+    const page = pageAndEntries.value.page + 1
+    return repository.items(page).then((ents) => {
+      const entries = ents.map((ent) => {
+        return {
+          id: ent.id ?? '',
+          title: ent.title ?? '',
+          userName: ent.userName ?? '',
+          createdAt: ent.createdAt?.toString() ?? '',
+          renderedBody: ent.renderedBody ?? '',
+        }
+      })
+
+      pageAndEntries.value = {
+        page,
+        entries,
+      }
+    })
+  }
+
+  const before = async (): Promise<void> => {
+    const page = pageAndEntries.value.page - 1
+    return repository.items(page).then((ents) => {
+      const entries = ents.map((ent) => {
+        return {
+          id: ent.id ?? '',
+          title: ent.title ?? '',
+          userName: ent.userName ?? '',
+          createdAt: ent.createdAt?.toString() ?? '',
+          renderedBody: ent.renderedBody ?? '',
+        }
+      })
+
+      pageAndEntries.value = {
+        page,
+        entries,
+      }
     })
   }
 
   return {
-    state,
+    pageAndEntries,
     load,
+    next,
+    before,
   }
 }
