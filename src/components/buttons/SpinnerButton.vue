@@ -1,14 +1,15 @@
 <template lang="pug">
-.button
-  button.btn(:disabled="isProgress")
-    Spinner(:SpinnerWidth="20" :SpinnerHeight="20" :SpinnerSpeed="1.0" v-show="isProgress")
-    svg(xmlns="http://www.w3.org/2000/svg", width="20", height="20", viewBox="0 0 200 200" v-show="isComplete")
-      path(d="M4890.068,1665.319a100,100,0,1,0,100,100A100,100,0,0,0,4890.068,1665.319Zm43.73,51.422,21.414,19.687-74.752,81.3-60.022-61.5,20.819-20.32,38.575,39.52Z", transform="translate(-4790.067 -1665.319)")
+button(:disabled="isLoading")
+  .btn
+    .svg
+      Spinner(:SpinnerWidth="20" :SpinnerHeight="20" :SpinnerSpeed="1.0" v-show="isLoading")
+      svg(xmlns="http://www.w3.org/2000/svg", width="20", height="20", viewBox="0 0 200 200" v-show="isCompleted")
+        path(d="M4890.068,1665.319a100,100,0,1,0,100,100A100,100,0,0,0,4890.068,1665.319Zm43.73,51.422,21.414,19.687-74.752,81.3-60.022-61.5,20.819-20.32,38.575,39.52Z", transform="translate(-4790.067 -1665.319)")
     .text {{ text }}
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, ref } from 'vue'
 
 import Spinner from '@/components/indicators/Spinner.vue'
 
@@ -22,28 +23,41 @@ export default defineComponent({
       type: String as PropType<string>,
       required: true,
     },
-    isProgress: {
-      type: Boolean as PropType<boolean>,
-      required: true,
-    },
-    isComplete: {
-      type: Boolean as PropType<boolean>,
-      required: true,
-    },
+  },
+  setup() {
+    const isLoading = ref(false)
+    const isCompleted = ref(false)
+
+    const progress = () => {
+      isLoading.value = true
+    }
+
+    const onCompleted = () => {
+      isLoading.value = false
+      isCompleted.value = true
+      setTimeout(() => {
+        isCompleted.value = false
+      }, 2000)
+    }
+
+    return {
+      isLoading,
+      isCompleted,
+      progress,
+      onCompleted,
+    }
   },
 })
 </script>
 
 <style lang="scss" scoped>
-.btn {
+button {
   background-color: #8a2be2;
   color: white;
   border: none;
-  margin: 10px 20px;
   padding: 12px 18px;
   border-radius: 8px;
   cursor: pointer;
-  display: flex;
   &:hover {
     background-color: #9932cc;
   }
@@ -52,6 +66,9 @@ export default defineComponent({
   }
   svg {
     fill: #ffffff;
+  }
+  .btn {
+    display: flex;
   }
   .text {
     line-height: 20px;
